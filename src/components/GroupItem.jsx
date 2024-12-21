@@ -15,14 +15,16 @@ function GroupItem({ group }) {
     }
 
     return (
-        <div className="flex mb-2">
-            <input className="w-full p-2" type="text" value={groupName} onChange={(e) => setGroupName(e.target.value)} readOnly={!isGroupEditable} />
-            <button className="px-6 bg-gray-950 text-white" onClick={editGroup} disabled={groupName === group.group && isGroupEditable}>
-                {isGroupEditable ? 'Save' : 'Edit'}
-            </button>
-            <button className="px-6 bg-red-600 text-white" onClick={() => deleteGroup(group.id)}>
-                Delete
-            </button>
+        <div className="bg-white p-8">
+            <input className="w-full font-bold text-xl mb-4" type="text" value={groupName} onChange={(e) => setGroupName(e.target.value)} readOnly={!isGroupEditable} />
+            <div className="flex space-x-2 text-sm">
+                <button className="text-gray-950 font-medium" onClick={editGroup} disabled={groupName === group.group && isGroupEditable}>
+                    {isGroupEditable ? 'Save' : 'Edit'}
+                </button>
+                <button className="text-red-600 font-medium" onClick={() => deleteGroup(group.id)}>
+                    Delete
+                </button>
+            </div>
         </div>
     );
 }

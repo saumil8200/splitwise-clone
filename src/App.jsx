@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import { GroupProvider } from './contexts'
-import { GroupForm, GroupItem } from './components/index'
+import { RouterProvider } from 'react-router-dom';
+import router from './routes';
 
 function App() {
   const [groups, setGroups] = useState([])
@@ -31,7 +32,7 @@ function App() {
 
   return (
     <GroupProvider value={{groups, addGroup, updateGroup, deleteGroup}}>
-      <div>
+      {/* <div>
         <h1 className="mt-10 bg-gray-950 text-white p-6 uppercase text-3xl text-center font-black">
           Splitwise
         </h1>
@@ -49,7 +50,8 @@ function App() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
+      <RouterProvider router={router} />
     </GroupProvider>
   )
 }
