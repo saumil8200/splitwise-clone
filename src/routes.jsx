@@ -9,7 +9,10 @@ const router = createBrowserRouter(
       <Route path="" element={<Home />} />
       <Route path="addgroup" element={<GroupForm />} />
     </Route>
-  )
+  ),
+  {
+    basename: '/splitwise-clone',  // Change this to your repository name
+  }
 );
 
 export default router;
