@@ -1,1 +1,1 @@
-export { GroupContext, GroupProvider, useGroup } from "./GroupCOntext";
+export { GroupContext, GroupProvider, useGroup } from "./GroupContext";
