@@ -4,6 +4,7 @@ import { GroupProvider, MemberProvider } from "./contexts";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes";
 
+
 function App() {
 	const [groups, setGroups] = useState([]);
 	const [members, setMembers] = useState([]);
