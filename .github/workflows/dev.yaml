@@ -1,5 +1,9 @@
 name: "pre-commit"
 
+concurrency:
+  group: ${{github.ref}}
+  cancel-in-progress: true
+
 on:
   push:
     branches-ignore:
@@ -16,8 +20,12 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
-      - name: Lint
+      - name: Format
         run: npm run format
+      - name: Lint
+        run: npm run lint
+      - name: Remove workspace
+        run: rm -rf $GITHUB_WORKSPACE/*
 
   build:
     runs-on: ubuntu-latest
@@ -31,3 +39,5 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Remove workspace
+        run: rm -rf $GITHUB_WORKSPACE/*
