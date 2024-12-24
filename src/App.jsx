@@ -5,57 +5,61 @@ import { RouterProvider } from "react-router-dom";
 import router from "./routes";
 
 function App() {
-  const [groups, setGroups] = useState([]);
-  const [members, setMembers] = useState([]);
+	const [groups, setGroups] = useState([]);
+	const [members, setMembers] = useState([]);
 
-  const addGroup = (group) => {
-    setGroups((prev) => [{ id: Date.now(), ...group }, ...prev]);
-  };
-  const updateGroup = (id, group) => {
-    setGroups((prev) => prev.map((prevGroup) => (prevGroup.id === id ? group : prevGroup)));
-  };
-  const deleteGroup = (id) => {
-    setGroups((prev) => prev.filter((group) => group.id !== id));
-  };
+	const addGroup = (group) => {
+		setGroups((prev) => [{ id: Date.now(), ...group }, ...prev]);
+	};
 
-  const addMember = (member, groupId) => {
-    setMembers((prev) => [{ id: Date.now(), groupId, ...member }, ...prev]);
-  };
-  const updateMember = (id, updatedMember) => {
-    setMembers((prev) => prev.map((prevMember) => (prevMember.id === id ? updatedMember : prevMember)));
-  };
-  const deleteMember = (id) => {
-    setMembers((prev) => prev.filter((member) => member.id !== id));
-  };
+	const updateGroup = (id, group) => {
+		setGroups((prev) => prev.map((prevGroup) => (prevGroup.id === id ? group : prevGroup)));
+	};
 
-  useEffect(() => {
-    const groups = JSON.parse(localStorage.getItem("groups"));
-    const storedMembers = JSON.parse(localStorage.getItem("members"));
+	const deleteGroup = (id) => {
+		setGroups((prev) => prev.filter((group) => group.id !== id));
+	};
 
-    if (groups && groups.length > 0) {
-      setGroups(groups);
-    }
+	const addMember = (member, groupId) => {
+		setMembers((prev) => [{ id: Date.now(), groupId, ...member }, ...prev]);
+	};
 
-    if (storedMembers && storedMembers.length > 0) {
-      setMembers(storedMembers);
-    }
-  }, []);
+	const updateMember = (id, updatedMember) => {
+		setMembers((prev) => prev.map((prevMember) => (prevMember.id === id ? updatedMember : prevMember)));
+	};
 
-  useEffect(() => {
-    localStorage.setItem("groups", JSON.stringify(groups));
-  }, [groups]);
+	const deleteMember = (id) => {
+		setMembers((prev) => prev.filter((member) => member.id !== id));
+	};
 
-  useEffect(() => {
-    localStorage.setItem("members", JSON.stringify(members));
-  }, [members]);
+	useEffect(() => {
+		const groups = JSON.parse(localStorage.getItem("groups"));
+		const storedMembers = JSON.parse(localStorage.getItem("members"));
 
-  return (
-    <GroupProvider value={{ groups, addGroup, updateGroup, deleteGroup }}>
-      <MemberProvider value={{ members, addMember, updateMember, deleteMember }}>
-        <RouterProvider router={router} />
-      </MemberProvider>
-    </GroupProvider>
-  );
+		if (groups && groups.length > 0) {
+			setGroups(groups);
+		}
+
+		if (storedMembers && storedMembers.length > 0) {
+			setMembers(storedMembers);
+		}
+	}, []);
+
+	useEffect(() => {
+		localStorage.setItem("groups", JSON.stringify(groups));
+	}, [groups]);
+
+	useEffect(() => {
+		localStorage.setItem("members", JSON.stringify(members));
+	}, [members]);
+
+	return (
+		<GroupProvider value={{ groups, addGroup, updateGroup, deleteGroup }}>
+			<MemberProvider value={{ members, addMember, updateMember, deleteMember }}>
+				<RouterProvider router={router} />
+			</MemberProvider>
+		</GroupProvider>
+	);
 }
 
 export default App;
