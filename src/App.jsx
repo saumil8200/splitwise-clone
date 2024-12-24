@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import './App.css'
-import { GroupProvider } from './contexts'
+import { GroupProvider, MemberProvider } from './contexts'
 import { RouterProvider } from 'react-router-dom';
 import router from './routes';
 
 function App() {
   const [groups, setGroups] = useState([])
+  const [members, setMembers] = useState([]);
 
   const addGroup = (group) => {
     setGroups((prev) => [{id: Date.now(), ...group}, ...prev])
@@ -17,11 +18,26 @@ function App() {
     setGroups((prev) => prev.filter((group) => group.id !== id))
   }
 
+  const addMember = (member, groupId) => {
+    setMembers((prev) => [{ id: Date.now(), groupId, ...member },...prev,])
+  }
+  const updateMember = (id, updatedMember) => {
+    setMembers((prev) => prev.map((prevMember) => (prevMember.id === id ? updatedMember : prevMember)))
+  }
+  const deleteMember = (id) => {
+    setMembers((prev) => prev.filter((member) => member.id !== id));
+  };
+
   useEffect(() => {
     const groups = JSON.parse(localStorage.getItem("groups"))
+    const storedMembers = JSON.parse(localStorage.getItem("members"));
 
     if (groups && groups.length > 0) {
       setGroups(groups)
+    }
+
+    if (storedMembers && storedMembers.length > 0) {
+      setMembers(storedMembers);
     }
     
   }, [])
@@ -30,28 +46,15 @@ function App() {
     localStorage.setItem("groups", JSON.stringify(groups))
   }, [groups])
 
+  useEffect(() => {
+    localStorage.setItem("members", JSON.stringify(members));
+}, [members]);
+
   return (
     <GroupProvider value={{groups, addGroup, updateGroup, deleteGroup}}>
-      {/* <div>
-        <h1 className="mt-10 bg-gray-950 text-white p-6 uppercase text-3xl text-center font-black">
-          Splitwise
-        </h1>
-        <h3 className='mt-4 text-2xl font-bold'>
-          Your Groups
-        </h3>
-        <div className='mt-4'>
-          <GroupForm />
-        </div>
-        <hr className="border-t border-gray-300 my-4" />
-        <div className='mt-4'>
-          {groups.map((group) => (
-            <div key={group.id}>
-              <GroupItem group={group} />
-            </div>
-          ))}
-        </div>
-      </div> */}
-      <RouterProvider router={router} />
+      <MemberProvider value={{ members, addMember, updateMember, deleteMember }}>
+        <RouterProvider router={router} />
+      </MemberProvider>
     </GroupProvider>
   )
 }
