@@ -1,8 +1,8 @@
-import { createBrowserRouter, createRoutesFromElements, Route } from 'react-router-dom';
-import Layout from './Layout';
-import Home from './pages/Home';
-import GroupDetail from './pages/GroupDetail';
-import { GroupForm } from './components';
+import { createBrowserRouter, createRoutesFromElements, Route } from "react-router-dom";
+import Layout from "./Layout";
+import Home from "./pages/Home";
+import GroupDetail from "./pages/GroupDetail";
+import { GroupForm } from "./components";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -13,7 +13,7 @@ const router = createBrowserRouter(
     </Route>
   ),
   {
-    basename: '/splitwise-clone',
+    basename: "/splitwise-clone"
   }
 );
 
