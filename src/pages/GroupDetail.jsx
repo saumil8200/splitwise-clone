@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useGroup, useMember } from "../contexts";
 import { MemberForm } from "../components";
@@ -9,10 +9,17 @@ function GroupDetail() {
 	const { groups, updateGroup, deleteGroup } = useGroup();
 	const { members } = useMember();
 
-	const group = groups.find((g) => g.id === parseInt(id));
-
+	const [group, setGroup] = useState(null);
 	const [isGroupEditable, setIsGroupEditable] = useState(false);
-	const [groupName, setGroupName] = useState(group?.group || "");
+	const [groupName, setGroupName] = useState("");
+
+	useEffect(() => {
+		const foundGroup = groups.find((g) => g.id === parseInt(id));
+		if (foundGroup) {
+			setGroup(foundGroup);
+			setGroupName(foundGroup.group);
+		}
+	}, [groups, id]);
 
 	const handleUpdateGroup = () => {
 		if (isGroupEditable && groupName !== group?.group) {
@@ -28,7 +35,7 @@ function GroupDetail() {
 	};
 
 	if (!group) {
-		return <p>Group not found.</p>;
+		return <p>Group not found</p>;
 	}
 
 	const groupMembers = members.filter((member) => member.groupId === group.id);
