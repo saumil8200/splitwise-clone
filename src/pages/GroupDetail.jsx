@@ -79,7 +79,7 @@ function GroupDetail() {
 									const member = members.find((m) => m.id === transaction.memberId);
 									return (
 										<li key={transaction.id} className="py-2">
-											{transaction.transaction} - ${transaction.amount} (Paid by: {member?.member || "Unknown"})
+											{transaction.transaction} - {transaction.amount} (Paid by: {member?.member || "Unknown"})
 										</li>
 									);
 								})
