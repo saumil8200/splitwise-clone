@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useGroup, useMember } from "../contexts";
-import { MemberForm } from "../components";
+import { useGroup, useMember, useTransaction } from "../contexts";
+import { MemberForm, TransactionForm } from "../components";
 
 function GroupDetail() {
 	const { id } = useParams();
 	const navigate = useNavigate();
 	const { groups, updateGroup, deleteGroup } = useGroup();
 	const { members } = useMember();
+	const { transactions } = useTransaction();
 
 	const [group, setGroup] = useState(null);
 	const [isGroupEditable, setIsGroupEditable] = useState(false);
@@ -39,6 +40,7 @@ function GroupDetail() {
 	}
 
 	const groupMembers = members.filter((member) => member.groupId === group.id);
+	const groupTransactions = transactions.filter((transaction) => transaction.groupId === group.id);
 
 	return (
 		<>
@@ -64,23 +66,49 @@ function GroupDetail() {
 					</button>
 				</div>
 			</div>
-			<div className="mt-6">
-				<MemberForm groupId={group.id} />
-			</div>
 
-			<div className="mt-6">
-				<h3 className="font-semibold text-lg">Group Members</h3>
-				<ul>
-					{groupMembers.length > 0 ? (
-						groupMembers.map((member) => (
-							<li key={member.id} className="py-2">
-								{member.member}
-							</li>
-						))
-					) : (
-						<li>No members in this group yet.</li>
-					)}
-				</ul>
+			<div className="">
+				<div className="">
+					<TransactionForm groupId={group.id} />
+
+					<div className="mt-6">
+						<h3 className="font-semibold text-lg">Group Transactions</h3>
+						<ul>
+							{groupTransactions.length > 0 ? (
+								groupTransactions.map((transaction) => {
+									const member = members.find((m) => m.id === transaction.memberId);
+									return (
+										<li key={transaction.id} className="py-2">
+											{transaction.transaction} - ${transaction.amount} (Paid by: {member?.member || "Unknown"})
+										</li>
+									);
+								})
+							) : (
+								<li>No transactions in this group yet.</li>
+							)}
+						</ul>
+					</div>
+				</div>
+				<div>
+					<div className="mt-6">
+						<MemberForm groupId={group.id} />
+					</div>
+
+					<div className="mt-6">
+						<h3 className="font-semibold text-lg">Group Members</h3>
+						<ul>
+							{groupMembers.length > 0 ? (
+								groupMembers.map((member) => (
+									<li key={member.id} className="py-2">
+										{member.member}
+									</li>
+								))
+							) : (
+								<li>No members in this group yet.</li>
+							)}
+						</ul>
+					</div>
+				</div>
 			</div>
 		</>
 	);

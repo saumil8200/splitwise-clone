@@ -17,8 +17,8 @@ function MemberForm({ groupId }) {
 
 	return (
 		<>
-			<h2 className="text-2xl font-bold py-6">Add New Member</h2>
-			<hr className="border-t border-gray-300 mb-4" />
+			{/* <h2 className="text-2xl font-bold py-6">Add New Member</h2> */}
+			{/* <hr className="border-t border-gray-300 mb-4" /> */}
 			<form onSubmit={handleAddMember}>
 				<label htmlFor="member-name" className="font-medium mb-2 block">
 					Member Name

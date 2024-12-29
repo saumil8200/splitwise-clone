@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import "./App.css";
-import { GroupProvider, MemberProvider } from "./contexts";
+import { GroupProvider, MemberProvider, TransactionProvider } from "./contexts";
 import { RouterProvider } from "react-router-dom";
 import router from "./routes";
 
 function App() {
 	const [groups, setGroups] = useState([]);
 	const [members, setMembers] = useState([]);
+	const [transactions, setTransactions] = useState([]);
 
 	const addGroup = (group) => {
 		setGroups((prev) => [{ id: Date.now(), ...group }, ...prev]);
@@ -32,9 +33,18 @@ function App() {
 		setMembers((prev) => prev.filter((member) => member.id !== id));
 	};
 
+	const addTransaction = (transaction, groupId, memberId) => {
+		setTransactions((prev) => [{ id: Date.now(), groupId, memberId, ...transaction }, ...prev]);
+	};
+
+	const updateTransaction = () => {};
+
+	const deleteTransaction = () => {};
+
 	useEffect(() => {
 		const groups = JSON.parse(localStorage.getItem("groups"));
 		const storedMembers = JSON.parse(localStorage.getItem("members"));
+		const storedTransactions = JSON.parse(localStorage.getItem("transactions"));
 
 		if (groups && groups.length > 0) {
 			setGroups(groups);
@@ -42,6 +52,10 @@ function App() {
 
 		if (storedMembers && storedMembers.length > 0) {
 			setMembers(storedMembers);
+		}
+
+		if (storedTransactions && storedTransactions.length > 0) {
+			setTransactions(storedTransactions);
 		}
 	}, []);
 
@@ -53,10 +67,16 @@ function App() {
 		localStorage.setItem("members", JSON.stringify(members));
 	}, [members]);
 
+	useEffect(() => {
+		localStorage.setItem("transactions", JSON.stringify(transactions));
+	}, [transactions]);
+
 	return (
 		<GroupProvider value={{ groups, addGroup, updateGroup, deleteGroup }}>
 			<MemberProvider value={{ members, addMember, updateMember, deleteMember }}>
-				<RouterProvider router={router} />
+				<TransactionProvider value={{ transactions, addTransaction, updateTransaction, deleteTransaction }}>
+					<RouterProvider router={router} />
+				</TransactionProvider>
 			</MemberProvider>
 		</GroupProvider>
 	);
